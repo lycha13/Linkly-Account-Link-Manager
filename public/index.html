@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111827">
+<meta name="description" content="Linkly — pusat pengelolaan akun dan aplikasi pihak ketiga yang terhubung.">
+<title>Linkly — Account Link Manager</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<!-- ================= AUTH ================= -->
+<div id="auth" class="auth hidden">
+  <section class="auth-pitch">
+    <div class="brand brand-light">
+      <span class="mark" aria-hidden="true">↗</span>
+      <span>linkly<small>ACCOUNT LINK MANAGER</small></span>
+    </div>
+    <div class="pitch-body">
+      <p class="eyebrow light">Satu tempat untuk semua tautan akun</p>
+      <h1>Ketahui akun mana yang dipakai di aplikasi mana.</h1>
+      <p class="pitch-copy">
+        Catat akun Google, email, dan nomor HP Anda. Lihat aplikasi yang memakainya,
+        status keterkaitan, serta langkah resmi untuk memutus akses atau menghapus akun.
+      </p>
+      <ul class="pitch-list">
+        <li><b>Inventaris jujur</b> — semua data adalah catatan Anda, bukan hasil pemindaian diam-diam.</li>
+        <li><b>Tindakan transparan</b> — Linkly tidak mengklaim memutus tautan tanpa bukti.</li>
+        <li><b>Kendali penuh</b> — ekspor, kosongkan, atau hapus seluruh data kapan saja.</li>
+      </ul>
+    </div>
+    <p class="pitch-note">Versi 1.0 · Data pribadi tidak pernah diminta kata sandi atau OTP-nya.</p>
+  </section>
+
+  <section class="auth-panel">
+    <div class="auth-card">
+      <div class="tabs" role="tablist">
+        <button type="button" id="tabLogin" class="tab active" role="tab" aria-selected="true">Masuk</button>
+        <button type="button" id="tabRegister" class="tab" role="tab" aria-selected="false">Daftar</button>
+      </div>
+
+      <form id="loginForm" class="form" novalidate>
+        <h2>Masuk ke workspace</h2>
+        <p class="muted small">Gunakan email dan password akun Linkly Anda.</p>
+        <p class="form-error hidden" id="loginError" role="alert"></p>
+        <label class="field">
+          <span>Email</span>
+          <input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com" required>
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <span class="pw">
+            <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" required>
+            <button class="pw-eye" type="button" data-pw-toggle="loginPassword" aria-pressed="false" aria-label="Tampilkan password" title="Tampilkan password">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 6.2 12 6.2 21.5 12 21.5 12 18 17.8 12 17.8 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.8"/><path class="slash" d="M4 20 20 4"/></svg>
+            </button>
+          </span>
+        </label>
+        <button class="btn primary block" type="submit">Masuk</button>
+      </form>
+
+      <form id="registerForm" class="form hidden" novalidate>
+        <h2>Buat workspace baru</h2>
+        <p class="muted small">Workspace baru dimulai dengan data contoh agar mudah dicoba.</p>
+        <p class="form-error hidden" id="registerError" role="alert"></p>
+        <label class="field">
+          <span>Nama</span>
+          <input id="registerName" maxlength="80" autocomplete="name" placeholder="Nama Anda" required>
+        </label>
+        <label class="field">
+          <span>Email</span>
+          <input id="registerEmail" type="email" autocomplete="username" placeholder="nama@email.com" required>
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <span class="pw">
+            <input id="registerPassword" type="password" autocomplete="new-password" placeholder="Minimal 8 karakter, huruf dan angka" required>
+            <button class="pw-eye" type="button" data-pw-toggle="registerPassword" aria-pressed="false" aria-label="Tampilkan password" title="Tampilkan password">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 6.2 12 6.2 21.5 12 21.5 12 18 17.8 12 17.8 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.8"/><path class="slash" d="M4 20 20 4"/></svg>
+            </button>
+          </span>
+        </label>
+        <button class="btn primary block" type="submit">Daftar</button>
+        <p class="hint">Jangan gunakan password akun Google/email Anda di sini.</p>
+      </form>
+
+      <div class="demo-box">
+        <b>Catatan keamanan</b>
+        <p class="small muted">Linkly tidak pernah meminta kata sandi Gmail, kode OTP, atau recovery code. Data contoh dapat dihapus dari halaman Pengaturan.</p>
+      </div>
+    </div>
+    <div class="auth-foot">
+      <button class="link" type="button" id="authTheme">Ganti tema</button>
+      <span class="muted small">© 2026 Linkly</span>
+    </div>
+  </section>
+</div>
+
+<!-- ================= APP SHELL ================= -->
+<div id="shell" class="layout hidden">
+  <aside class="side" id="side">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">↗</span>
+      <span>linkly<small>ACCOUNT LINK MANAGER</small></span>
+    </div>
+    <nav class="nav" aria-label="Navigasi utama">
+      <p class="navlabel">Workspace</p>
+      <button data-action="nav" data-route="dashboard" type="button">▦ <span>Dashboard</span></button>
+      <button data-action="nav" data-route="accounts" type="button">◉ <span>Akun tertaut</span></button>
+      <button data-action="nav" data-route="apps" type="button">▣ <span>Daftar aplikasi</span></button>
+      <button data-action="nav" data-route="history" type="button">↻ <span>Riwayat aktivitas</span></button>
+      <p class="navlabel">Aplikasi</p>
+      <button data-action="nav" data-route="android" type="button">⬇ <span>Aplikasi Android</span></button>
+      <p class="navlabel">Preferensi</p>
+      <button data-action="nav" data-route="settings" type="button">⚙ <span>Pengaturan</span></button>
+    </nav>
+    <div class="sidefoot">
+      <p>Data inventaris pribadi</p>
+      <small>Versi 1.0 · API + Web + Android</small>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="top">
+      <div class="top-left">
+        <button class="menu" id="menu" type="button" aria-label="Buka menu">☰</button>
+        <strong id="crumb">Dashboard</strong>
+      </div>
+      <div class="top-right">
+        <span class="pill" id="demoPill">MODE DATA CONTOH</span>
+        <button class="icon-btn" id="themeToggle" type="button" title="Ganti tema" aria-label="Ganti tema">◐</button>
+        <div class="user">
+          <span class="avatar" id="avatar">?</span>
+          <span class="user-meta"><b id="userName">—</b><small id="userEmail">—</small></span>
+          <button class="btn ghost sm" id="logoutBtn" type="button">Keluar</button>
+        </div>
+      </div>
+    </header>
+    <section class="content" id="view" aria-live="polite"></section>
+  </main>
+</div>
+
+<div id="modalRoot"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="/app.js" type="module"></script>
+</body>
+</html>

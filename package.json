@@ -1,0 +1,15 @@
+{
+  "name": "linkly",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Linkly — Account Link Manager. REST API + web app + Android client untuk menginventarisasi akun dan keterkaitannya dengan aplikasi pihak ketiga.",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test tests/"
+  }
+}
